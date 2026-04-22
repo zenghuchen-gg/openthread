@@ -469,7 +469,8 @@ void SubMac::StartTimerForBackoff(uint8_t aBackoffExponent)
 {
     uint32_t backoff;
 
-    backoff = Random::NonCrypto::GetUint32InRange(0, static_cast<uint32_t>(1UL << aBackoffExponent));
+    backoff = Random::NonCrypto::GetUint32InRange(aBackoffExponent == 0 ? 0 : static_cast<uint32_t>(1UL << (aBackoffExponent - 1)),
+                                                  static_cast<uint32_t>(1UL << aBackoffExponent));
     backoff *= (kUnitBackoffPeriod * Radio::kSymbolTime);
 
     if (mRxOnWhenIdle)
